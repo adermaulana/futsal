@@ -10,38 +10,33 @@
         
     }
 
-    if(isset($_POST['login'])){
-
-        $email = $_POST['email'];
+    if (isset($_POST['registrasi'])) {
         $password = md5($_POST['password']);
+        $email = $_POST['email'];
 
-        $login = mysqli_query($koneksi, "SELECT * FROM admin WHERE email='$email' and password='$password'");
-        $cek = mysqli_num_rows($login);
-
-		$loginPelanggan = mysqli_query($koneksi, "SELECT * FROM pelanggan WHERE email='$email' and password='$password'");
-        $cekPelanggan = mysqli_num_rows($loginPelanggan);
-
-        if($cek > 0) {
-            $admin_data = mysqli_fetch_assoc($login);
-            $_SESSION['id_admin'] = $admin_data['id'];
-            $_SESSION['nama_admin'] = $admin_data['nama'];
-            $_SESSION['email_admin'] = $email;
-            $_SESSION['status'] = "login";
-            header('location:admin');
-
-        } else if($cekPelanggan > 0) {
-            $admin_data = mysqli_fetch_assoc($loginPelanggan);
-            $_SESSION['id_pelanggan'] = $admin_data['id'];
-            $_SESSION['nama_pelanggan'] = $admin_data['nama'];
-            $_SESSION['email_pelanggan'] = $email;
-            $_SESSION['status'] = "login";
-            header('location:pelanggan.php');
-        
-         }  else {
+        // Check if the username already exists
+        $checkEmail = mysqli_query($koneksi, "SELECT * FROM pelanggan WHERE email='$email'");
+        if (mysqli_num_rows($checkEmail) > 0) {
             echo "<script>
-            alert('Login Gagal, Periksa Username dan Password Anda!');
-            header('location:index.php');
-                 </script>";
+                    alert('Email sudah digunakan, pilih Email lain.');
+                    document.location='registrasi.php';
+                </script>";
+            exit; // Stop further execution
+        }
+
+        // If the username is not taken, proceed with the registration
+        $simpan = mysqli_query($koneksi, "INSERT INTO pelanggan (nama, alamat, email,telepon, password) VALUES ('$_POST[nama]','$_POST[alamat]','$_POST[email]','$_POST[telepon]','$password')");
+
+        if ($simpan) {
+            echo "<script>
+                    alert('Berhasil Registrasi!');
+                    document.location='index.php';
+                </script>";
+        } else {
+            echo "<script>
+                    alert('Gagal!');
+                    document.location='registrasi.php';
+                </script>";
         }
     }
 
@@ -50,7 +45,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login V2</title>
+	<title>Registrasi</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -83,16 +78,31 @@
 			<div class="wrap-login100">
 				<form class="login100-form validate-form" method="POST">
 					<span class="login100-form-title p-b-26">
-						Welcome
+						Registrasi
 					</span>
 					<span class="login100-form-title p-b-48">
 						<i class="zmdi zmdi-font"></i>
 					</span>
 
+                    <div class="wrap-input100 validate-input">
+						<input class="input100" type="text" name="nama">
+						<span class="focus-input100" data-placeholder="Nama"></span>
+					</div>
+
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is: a@b.c">
 						<input class="input100" type="text" name="email">
 						<span class="focus-input100" data-placeholder="Email"></span>
 					</div>
+
+                    <div class="wrap-input100 validate-input">
+						<input class="input100" type="number" name="telepon">
+						<span class="focus-input100" data-placeholder="Telepon"></span>
+					</div>
+
+                    <div class="wrap-input100 validate-input">
+                        <textarea class="input100" name="alamat" rows="4"></textarea>
+                        <span class="focus-input100" data-placeholder="Alamat"></span>
+                    </div>
 
 					<div class="wrap-input100 validate-input" data-validate="Enter password">
 						<span class="btn-show-pass">
@@ -105,19 +115,19 @@
 					<div class="container-login100-form-btn">
 						<div class="wrap-login100-form-btn">
 							<div class="login100-form-bgbtn"></div>
-							<button class="login100-form-btn" type="submit" name="login">
-								Login
+							<button class="login100-form-btn" type="submit" name="registrasi">
+								Registrasi
 							</button>
 						</div>
 					</div>
 
 					<div class="text-center p-t-115">
 						<span class="txt1">
-							Belum Punya Akun?
+							Sudah Punya Akun?
 						</span>
 
-						<a class="txt2" href="registrasi.php">
-							Registrasi
+						<a class="txt2" href="index.php">
+							Login
 						</a>
 					</div>
 				</form>
