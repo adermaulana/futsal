@@ -51,8 +51,7 @@ if($_SESSION['status'] != 'login'){
                 <!--change to offline or busy as needed-->
               </div>
               <div class="nav-profile-text d-flex ms-0 mb-3 flex-column">
-                <span class="fw-semibold mb-1 mt-2 text-center">Antonio Olson</span>
-                <span class="text-secondary icon-sm text-center">$3499.00</span>
+                <span class="fw-semibold mb-1 mt-2 text-center"><?= $_SESSION['nama_admin'] ?></span>
               </div>
             </a>
           </li>
