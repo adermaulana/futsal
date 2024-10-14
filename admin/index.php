@@ -60,7 +60,7 @@ if($_SESSION['status'] != 'login'){
             <span class="nav-item-head">Home</span>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="index.php">
               <i class="mdi mdi-compass-outline menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -114,6 +114,18 @@ if($_SESSION['status'] != 'login'){
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="#">Lihat Rating</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#pelanggan" aria-expanded="false" aria-controls="pelanggan">
+              <i class="mdi mdi-chart-bar menu-icon"></i>
+              <span class="menu-title">Pelanggan</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="pelanggan">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="pelanggan.php">Pelanggan</a></li>
               </ul>
             </div>
           </li>
