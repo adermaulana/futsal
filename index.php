@@ -72,8 +72,8 @@ session_start();
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="#hero" class="active">Home<br></a></li>
-          <li><a href="#">Lapangan</a></li>
-          <li><a href="#">Rating</a></li>
+          <li><a href="lapangan.php">Lapangan</a></li>
+          <li><a href="rating.php">Rating</a></li>
           <li><a href="kontak.php">Kontak</a></li>
           
         </ul>

@@ -13,6 +13,18 @@ if($_SESSION['status'] != 'login'){
 
 }
 
+if(isset($_GET['hal']) == "hapus"){
+
+    $hapus = mysqli_query($koneksi, "DELETE FROM lapangan WHERE id = '$_GET[id]'");
+  
+    if($hapus){
+        echo "<script>
+        alert('Hapus data sukses!');
+        document.location='lapangan.php';
+        </script>";
+    }
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +50,9 @@ if($_SESSION['status'] != 'login'){
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="assets/images/favicon.png" />
+
+    <!-- datatable -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
   </head>
   <body>
     <div class="container-scroller">
@@ -168,35 +183,44 @@ if($_SESSION['status'] != 'login'){
         <div class="main-panel">
           <div class="content-wrapper">
             <div class="page-header">
-              <h3 class="page-title">Pelanggan</h3>
+              <h3 class="page-title">Lapangan</h3>
             </div>
             <div class="row">
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
                     <div class="table-responsive">
-                      <table class="table">
+                      <table class="table" id="example">
                         <thead>
                           <tr>
                             <th>No</th>
                             <th>Nama</th>
-                            <th>Email</th>
-                            <th>Alamat</th>
-                            <th>Telepon</th>
+                            <th>Harga/Jam</th>
+                            <th>Kategori</th>
+                            <th>Fasilitas</th>
+                            <th>Foto</th>
+                            <th>Aksi</th>
                           </tr>
                         </thead>
                         <tbody>
                         <?php
                             $no = 1;
-                            $tampil = mysqli_query($koneksi, "SELECT * FROM pelanggan");
+                            $tampil = mysqli_query($koneksi, "SELECT lapangan.*, kategori.nama as nama_kategori 
+                                      FROM lapangan 
+                                      JOIN kategori ON lapangan.id_kategori = kategori.id");
                             while($data = mysqli_fetch_array($tampil)):
                         ?>
                           <tr>
                             <td><?= $no++ ?></td>
-                            <td><?= $data['nama'] ?></td>
-                            <td><?= $data['email'] ?></td>
-                            <td><?= $data['alamat'] ?></td>
-                            <td><?= $data['telepon'] ?></td>
+                            <td><?= $data['nama_lapangan'] ?></td>
+                            <td><?= 'Rp ' . number_format($data['harga'], 0, ',', '.') ?></td>
+                            <td><?= $data['nama_kategori'] ?></td>
+                            <td><?= $data['fasilitas'] ?></td>
+                            <td><img src="../<?= $data['foto']; ?>" alt=""></td>
+                            <td>
+                                <a class="btn btn-warning" href="editlapangan.php?hal=edit&id=<?= $data['id']?>">Edit</a>
+                                <a class="btn btn-danger" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')" href="lapangan.php?hal=hapus&id=<?= $data['id']?>">Hapus</a>
+                            </td>
                           </tr>
                           <?php
                             endwhile; 
@@ -248,5 +272,11 @@ if($_SESSION['status'] != 'login'){
     <script src="assets/js/proBanner.js"></script>
     <script src="assets/js/dashboard.js"></script>
     <!-- End custom js for this page -->
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script>
+        new DataTable('#example');
+    </script>
   </body>
 </html>

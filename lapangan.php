@@ -110,61 +110,55 @@ session_start();
   </header>
 
   <main class="main">
-    <!-- Contact Section -->
-    <section id="contact" class="contact section">
 
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <p><span>Need Help?</span> <span class="description-title">Contact Us</span></p>
-      </div><!-- End Section Title -->
+  <section id="menu" class="menu section">
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row gy-4">
+<!-- Section Title -->
+<div class="container section-title" data-aos="fade-up">
+  <p><span>Daftar</span> <span class="description-title">Lapangan</span></p>
+</div><!-- End Section Title -->
 
-          <div class="col-md-6">
-            <div class="info-item d-flex align-items-center" data-aos="fade-up" data-aos-delay="200">
-              <i class="icon bi bi-geo-alt flex-shrink-0"></i>
-              <div>
-                <h3>Address</h3>
-                <p>Perintis Kemerdekaan</p>
-              </div>
-            </div>
-          </div><!-- End Info Item -->
+<div class="container">
 
-          <div class="col-md-6">
-            <div class="info-item d-flex align-items-center" data-aos="fade-up" data-aos-delay="300">
-              <i class="icon bi bi-telephone flex-shrink-0"></i>
-              <div>
-                <h3>Call Us</h3>
-                <p>+62853xxx</p>
-              </div>
-            </div>
-          </div><!-- End Info Item -->
 
-          <div class="col-md-6">
-            <div class="info-item d-flex align-items-center" data-aos="fade-up" data-aos-delay="400">
-              <i class="icon bi bi-envelope flex-shrink-0"></i>
-              <div>
-                <h3>Email Us</h3>
-                <p>futsal@example.com</p>
-              </div>
-            </div>
-          </div><!-- End Info Item -->
 
-          <div class="col-md-6">
-            <div class="info-item d-flex align-items-center" data-aos="fade-up" data-aos-delay="500">
-              <i class="icon bi bi-clock flex-shrink-0"></i>
-              <div>
-                <h3>Opening Hours<br></h3>
-                <p><strong>Setiap Hari:</strong> 08.00 WITA - 23.00 WITA</p>
-              </div>
-            </div>
-          </div><!-- End Info Item -->
+  <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
 
-        </div>
-      </div>
+  <div class="tab-pane fade active show" id="menu-starters">
+    <div class="row gy-5">
+    <?php
+            $no = 1;
+            $tampil = mysqli_query($koneksi, "SELECT lapangan.*, kategori.nama as nama_kategori 
+                                            FROM lapangan 
+                                            JOIN kategori ON lapangan.id_kategori = kategori.id");
+            while($data = mysqli_fetch_array($tampil)):
+    ?>
+        <div class="col-lg-4 menu-item">
+        <a href="<?= $data['foto'] ?>" class="glightbox">
+            <img src="<?= $data['foto'] ?>" class="menu-img img-fluid" alt="<?= $data['nama_lapangan'] ?>">
+        </a>
+        <h4><?= $data['nama_lapangan'] ?></h4>
+        <p class="ingredients">
+            <?= $data['fasilitas'] ?>
+        </p>
+        <p class="price">
+            <?= 'Rp ' . number_format($data['harga'], 0, ',', '.') ?>
+        </p>
+        <!-- Pesan button -->
+        <a href="pesan.php?id_lapangan=<?= $data['id'] ?>" class="btn btn-primary">Pesan</a>
+        </div><!-- Menu Item -->
+    <?php
+        endwhile; 
+    ?>
+    </div>
+    </div>
 
-    </section><!-- /Contact Section -->
+
+  </div>
+
+</div>
+
+</section>
 
   </main>
 
